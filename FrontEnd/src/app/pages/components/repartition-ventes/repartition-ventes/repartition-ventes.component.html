@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl">Répartition des ventes par type</h2>
+    <p-dropdown 
+      [options]="years" 
+      [(ngModel)]="selectedYear" 
+      optionLabel="label" 
+      optionValue="value" 
+      (onChange)="onYearChange()" 
+      placeholder="Année"
+      class="w-[12rem]"
+    />
+  </div>
+
+  <p-chart type="bar" [data]="data" [options]="options" class="h-[30rem] w-full" />
+</div>

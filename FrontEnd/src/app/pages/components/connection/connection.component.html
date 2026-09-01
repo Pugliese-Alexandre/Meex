@@ -1,0 +1,38 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="modern-form">
+  <div class="form-title">Connexion</div>
+
+  <div class="form-body">
+    <div class="input-group">
+      <div class="input-wrapper">
+        <input
+          formControlName="email"
+          placeholder="Adresse e-mail"
+          class="form-input"
+          type="email"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div class="input-wrapper">
+        <input
+          formControlName="motDePasse"
+          placeholder="Mot de passe"
+          class="form-input"
+          type="password"
+          required
+        />
+      </div>
+    </div>
+  </div>
+
+  <app-button type="submit" class="submit-button" label="Se connecter"></app-button>
+
+  <div class="form-footer">
+    <a routerLink="/inscription" class="login-link">
+      Pas encore de compte ? <span>Créez-en un</span>
+    </a>
+  </div>
+
+</form>

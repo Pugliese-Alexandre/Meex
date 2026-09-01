@@ -1,0 +1,85 @@
+/* --- Filtres alphabétiques --- */
+.alphabet-filter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  margin-bottom: 1rem;
+}
+
+.alphabet-filter .letter {
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #333;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.2s, color 0.2s, border 0.2s;
+}
+
+.alphabet-filter .letter:hover,
+.alphabet-filter .letter.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.alphabet-filter .letter.active {
+  border: 1px solid black;
+}
+
+.alphabet-title {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  text-align: center;
+  color: #444;
+}
+
+/* --- Dialog fullscreen si besoin --- */
+::ng-deep .dialog-fullscreen {
+  width: 90% !important;
+  max-width: 95vw !important;
+}
+
+/* --- Dialog content padding --- */
+::ng-deep .p-dialog .p-dialog-content {
+  padding: 2rem !important;
+  overflow: visible !important;
+}
+
+/* --- Dropdown global --- */
+::ng-deep .p-dropdown {
+  width: 100% !important;
+}
+
+/* --- Email --- */
+.icon-btn {
+  background: transparent;
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  background-color: #e4e4e7;
+}
+
+::ng-deep .p-dialog {
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+::ng-deep .p-dialog .p-button {
+  min-width: 7rem;
+}

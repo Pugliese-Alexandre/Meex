@@ -1,0 +1,153 @@
+// ==========================
+// 🎨 STYLE GLOBAUX DIALOGUE
+// ==========================
+::ng-deep .p-dialog.dialog-commande {
+  width: 100% !important;
+  max-width: 40rem !important;
+  border-radius: 1rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
+  animation: popIn 0.3s ease-out !important;
+}
+
+::ng-deep .p-dialog.dialog-commande .p-dialog-header {
+  background: linear-gradient(135deg, #4a90e2, #6fb1f7) !important;
+  color: #fff !important;
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  border-bottom: none;
+}
+
+::ng-deep .p-dialog.dialog-commande .p-dialog-content {
+  background: #f4f6f8;
+  padding: 2rem !important;
+}
+
+// ==========================
+// 🧩 FORMULAIRES
+// ==========================
+::ng-deep .dialog-commande .form-group {
+  margin-bottom: 1.5rem;
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+  ::ng-deep .p-dropdown,
+  ::ng-deep .p-inputtext,
+  ::ng-deep .p-calendar {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    transition: border-color .2s, box-shadow .2s;
+    &:focus {
+      border-color: #4a90e2 !important;
+      box-shadow: 0 0 0 0.2rem rgba(74,144,226,0.25) !important;
+    }
+  }
+}
+
+// ==========================
+// 🧾 ARTICLES
+// ==========================
+::ng-deep .dialog-commande .article-item {
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  gap: 1rem;
+  align-items: end;
+}
+::ng-deep .dialog-commande .article-item .p-dropdown,
+::ng-deep .dialog-commande .article-item .p-inputtext {
+  margin-bottom: 0;
+}
+::ng-deep .dialog-commande .article-item .p-button-danger {
+  font-size: 1.2rem !important;
+  background: transparent !important;
+  border: none !important;
+  color: #e53e3e !important;
+}
+
+// ==========================
+// ➕ BOUTON AJOUTER
+// ==========================
+::ng-deep .dialog-commande button.p-button-text {
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #4a90e2 !important;
+  &:hover {
+    background: rgba(74,144,226,0.1) !important;
+  }
+}
+
+// 🌐 Hauteur du menu déroulant PrimeNG (p-dropdown)
+::ng-deep .p-dropdown-panel {
+  max-height: 250px !important;
+  overflow-y: auto !important;
+}
+
+::ng-deep .p-dropdown-items-wrapper {
+  max-height: 250px !important;
+  overflow-y: auto !important;
+}
+
+// ==========================
+// 📦 FOOTER
+// ==========================
+::ng-deep .p-dialog.dialog-commande .p-dialog-footer {
+  background: #f4f6f8;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+// ==========================
+// ✅ ANIMATION
+// ==========================
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+// ==========================
+// ✅ RESPONSIVE
+// ==========================
+@media (max-width: 768px) {
+// 1) Laisse le contenu de la dialog s’échapper si besoin
+::ng-deep .p-dialog.dialog-commande .p-dialog-content {
+  overflow-x: visible !important;
+  overflow-y: auto    !important;
+}
+
+// 2) Sur mobile, passe tes items en flex-column
+@media (max-width: 768px) {
+  ::ng-deep .dialog-commande .article-item {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  // Le dropdown et l’input prennent 100% de la largeur
+  ::ng-deep .dialog-commande .article-item .p-dropdown,
+  ::ng-deep .dialog-commande .article-item .p-inputtext {
+    width: 100% !important;
+  }
+
+  // Le bouton delete passe en fin de colonne, bien visible
+  ::ng-deep .dialog-commande .article-item .p-button-danger {
+    align-self: flex-end;
+    margin-top: 0.5rem !important;
+  }
+}
+
+}

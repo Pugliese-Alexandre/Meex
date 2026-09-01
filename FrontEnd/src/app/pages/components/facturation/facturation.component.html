@@ -1,0 +1,64 @@
+<div class="flex justify-start mb-4">
+    <app-custom-button icon="pi pi-plus" tooltip="Ajouter une facture" styleClass="btn-primary" (click)="visibleAdd = true"> </app-custom-button>
+</div>
+
+<!-- Formulaire de création de facture -->
+<p-dialog header="Créer une nouvelle facture" [(visible)]="visibleAdd" [modal]="true" [style]="{ width: '60vw' }" [closable]="true" [dismissableMask]="true">
+    <form #f="ngForm" (ngSubmit)="onCreate(f.value)">
+        <div class="grid -colgrids-2 gap-3">
+            <input name="nom" [(ngModel)]="newFacture.nom" pInputText placeholder="Nom client" required />
+            <input name="prenom" [(ngModel)]="newFacture.prenom" pInputText placeholder="Prénom client" required />
+            <input name="montant" [(ngModel)]="newFacture.montant" pInputText type="number" placeholder="Montant" required />
+            <input name="quantite" [(ngModel)]="newFacture.quantite" pInputText type="number" placeholder="Quantité" required />
+            <input name="statut" [(ngModel)]="newFacture.statut" pInputText placeholder="Statut" required />
+            <input name="dateFacture" [(ngModel)]="newFacture.dateFacture" pInputText type="date" placeholder="Date facture" required />
+            <input name="dateEcheance" [(ngModel)]="newFacture.dateEcheance" pInputText type="date" placeholder="Date échéance" required />
+            <input name="references" [(ngModel)]="refsCsv" pInputText placeholder="Références (séparées par des virgules)" />
+        </div>
+
+        <div class="mt-4 text-right">
+            <button pButton type="submit" label="Créer facture" class="p-button-success"></button>
+        </div>
+    </form>
+</p-dialog>
+
+<!-- Barre de recherche + filtre -->
+<div class="flex justify-content-between align-items-center mb-3">
+    <!-- Recherche libre -->
+    <input type="text" pInputText placeholder="Recherche par nom, prénom ou référence" [(ngModel)]="searchTerm" name="searchTerm" class="p-inputtext-sm w-full max-w-30rem" />
+
+    <!-- Filtre par statut -->
+    <p-dropdown [options]="statuts" [(ngModel)]="selectedStatut" name="selectedStatut" placeholder="Filtrer par statut" class="w-full max-w-15rem" [autoDisplayFirst]="false"></p-dropdown>
+
+    <!-- Réinitialiser le filtre -->
+    <button pButton label="Réinitialiser" icon="pi pi-times" class="p-button-sm p-button-secondary ml-2" (click)="selectedStatut = ''" *ngIf="selectedStatut"></button>
+</div>
+
+<!-- Tableau des factures -->
+<p-table [value]="filteredFactures" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="body" let-facture>
+        <tr>
+            <td>{{ facture.nomClient }}</td>
+            <td>{{ facture.prenomClient }}</td>
+            <td>{{ facture.montantTotal | currency: 'EUR' }}</td>
+            <td>{{ facture.quantiteTotale }}</td>
+            <td>
+                <p-tag [value]="formatStatut(facture.statutCommande)" [severity]="getSeverity(facture.statutCommande)" class="text-sm font-semibold"></p-tag>
+            </td>
+            <td>
+                <ul>
+                    <li *ngFor="let ref of facture.referencesProduits">{{ ref }}</li>
+                </ul>
+            </td>
+            <td>{{ facture.dateEmission | date: 'shortDate' }}</td>
+            <td>{{ facture.dateEcheance | date: 'shortDate' }}</td>
+            <td class="flex gap-1">
+                <p-button icon="pi pi-file" severity="secondary" rounded text (click)="onDownloadPdf(facture.id)" title="Télécharger la facture"></p-button>
+
+                <p-button icon="pi pi-print" rounded text (click)="onPrintPdf(facture.id)" title="Imprimer la facture"></p-button>
+
+                <p-button icon="pi pi-envelope" severity="help" rounded text (click)="onSendPdf(facture.id)" title="Envoyer la facture"></p-button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

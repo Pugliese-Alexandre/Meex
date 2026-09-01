@@ -1,0 +1,22 @@
+<div class="card">
+      <h2 class="text-xl">Achat Or, Argent et pierre précieuse</h2>
+  <div class="flex justify-between items-center mb-4">
+    <div class="flex-1">
+      <p-dropdown 
+        [options]="years" 
+        [(ngModel)]="selectedYear" 
+        (onChange)="onYearChange()" 
+        placeholder="Sélectionne une année"
+        class="w-full md:w-48 float-right">
+      </p-dropdown>
+    </div>
+  </div>
+
+  <p-chart 
+    type="pie" 
+    [data]="data" 
+    [options]="options" 
+    class="w-full md:w-[10rem] mx-auto">
+  </p-chart>
+</div>
+

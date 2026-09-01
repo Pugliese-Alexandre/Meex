@@ -1,0 +1,184 @@
+<p-toast></p-toast>
+
+<!-- 🟢 Bouton Ajouter -->
+<app-custom-button
+  icon="pi pi-plus"
+  tooltip="Ajouter un fournisseur"
+  styleClass="btn-primary"
+  (click)="visibleAdd = true">
+</app-custom-button>
+
+<!-- 🟢 Tableau des fournisseurs -->
+<div class="card">
+  <!-- Filtres alphabétiques -->
+  <div class="alphabet-filter mb-3">
+    <p class="alphabet-title">Filtrer par Nom :</p>
+    <span *ngFor="let letter of alphabet"
+          (click)="filterByLetter(letter)"
+          class="letter"
+          [ngClass]="{ 'active': selectedLetter === letter }"
+          style="cursor: pointer; margin-right: 5px;">
+      {{ letter }}
+    </span>
+  
+    <button *ngIf="selectedLetter" (click)="resetFilter()" class="ml-2 p-button p-button-sm p-button-secondary">
+      Réinitialiser
+    </button>
+  
+  </div>
+  <div *ngIf="selectedLetter">
+    <strong>Lettre sélectionnée :</strong> {{ selectedLetter }} - 
+    {{ filteredFournisseur.length > 0 ? filteredFournisseur.length + ' fournisseur(s) trouvé(s)' : 'Aucun fournisseur' }}
+
+  </div>
+  <p-table [value]="filteredFournisseur" dataKey="id" [paginator]="true" [rows]="6" [rowsPerPageOptions]="[5, 10, 20]">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:10%">ID</th>
+        <th style="width:20%">Nom</th>
+        <th style="width:20%">Adresse</th>
+        <th style="width:15%">Téléphone</th>
+        <th style="width:20%">Email</th>
+        <th style="width:20%">Contact</th>        
+        <th style="width:10%">Marge (%)</th>
+        <th style="width:15%">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-fournisseur>
+      <tr>
+        <td>{{ fournisseur.id }}</td>
+        <td>{{ fournisseur.nom }}</td>
+        <td>{{ fournisseur.adresse }}</td>
+        <td>{{ fournisseur.telephone }}</td>
+        <td>{{ fournisseur.email }}</td>
+        <td>{{ fournisseur.personneReference }}</td>
+        <td>{{ fournisseur.marge }}%</td>
+        <td>
+          <p-button icon="pi pi-pencil" severity="secondary" rounded text (click)="ouvrirEdition(fournisseur)"></p-button>
+          <p-button icon="pi pi-trash" severity="danger" rounded text (click)="ouvrirSuppression(fournisseur)"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- ✅ Dialog : Ajouter un fournisseur -->
+<p-dialog
+  header="Ajouter un fournisseur"
+  [(visible)]="visibleAdd"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+  [closable]="false"
+  contentStyleClass="form-fournisseur"
+>
+  <div class="p-3 form-fournisseur-wrapper">
+    <div class="form-fournisseur-content">
+      <div>
+        <label for="nom">Nom</label>
+        <input id="nom" [(ngModel)]="newFournisseur.nom" />
+      </div>
+
+      <div>
+        <label for="adresse">Adresse</label>
+        <input id="adresse" [(ngModel)]="newFournisseur.adresse" />
+      </div>
+
+      <div>
+        <label for="telephone">Téléphone</label>
+        <input id="telephone" [(ngModel)]="newFournisseur.telephone" />
+      </div>
+
+      <div>
+        <label for="email">Email</label>
+        <input id="email"  [(ngModel)]="newFournisseur.email" />
+      </div>
+
+      <div>
+        <label for="personneReference">Personne de référence</label>
+        <input id="personneReference" [(ngModel)]="newFournisseur.personneReference" />
+      </div>
+
+      <div>
+        <label for="marge">Marge (%)</label>
+        <input id="marge" type="number" [(ngModel)]="newFournisseur.marge" />
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2 px-3 pb-3">
+      <button pButton label="Annuler" class="p-button-text" (click)="visibleAdd = false"></button>
+      <button pButton label="Ajouter" class="p-button-success" (click)="ajouterFournisseur()"></button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+
+<!-- ✅ Dialog : Modifier un fournisseur -->
+<p-dialog
+  header="Modifier un fournisseur"
+  [(visible)]="visibleEdit"
+  [modal]="true"
+  [style]="{ width: '25rem' }"
+>
+  <div *ngIf="selectedFournisseur" class="dialog-form-modern">
+    <div class="form-field">
+      <label for="nom">Nom</label>
+      <input id="nom" pInputText [(ngModel)]="selectedFournisseur.nom" placeholder="Nom" />
+    </div>
+
+    <div class="form-field">
+      <label for="adresse">Adresse</label>
+      <input id="adresse" pInputText [(ngModel)]="selectedFournisseur.adresse" placeholder="Adresse" />
+    </div>
+
+    <div class="form-field">
+      <label for="telephone">Téléphone</label>
+      <input id="telephone" pInputText [(ngModel)]="selectedFournisseur.telephone" placeholder="Téléphone" />
+    </div>
+
+    <div class="form-field">
+      <label for="email">Email</label>
+      <input id="email" pInputText [(ngModel)]="selectedFournisseur.email" placeholder="Email" />
+    </div>
+
+    <div class="form-field">
+      <label for="contact">Personne de référence</label>
+      <input id="contact" pInputText [(ngModel)]="selectedFournisseur.personneReference" placeholder="Personne de référence" />
+    </div>
+
+    <div class="form-field">
+      <label for="marge">Marge (%)</label>
+      <input id="marge" pInputText type="number" [(ngModel)]="selectedFournisseur.marge" placeholder="Marge" />
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Annuler" severity="secondary" (click)="visibleEdit = false" />
+    <p-button label="Modifier" class="p-button-success" (click)="modifierFournisseur()" />
+  </ng-template>
+</p-dialog>
+
+<!-- ✅ Dialog : Supprimer un fournisseur -->
+<p-dialog
+  header="Confirmer la suppression"
+  [(visible)]="visibleDelete"
+  [modal]="true"
+  [style]="{ width: '25rem' }"
+>
+  <div class="p-3" *ngIf="selectedFournisseur">
+    <p>Êtes-vous sûr de vouloir supprimer le fournisseur suivant ?</p>
+    <ul class="mt-2">
+      <li><strong>ID :</strong> {{ selectedFournisseur.id }}</li>
+      <li><strong>Nom :</strong> {{ selectedFournisseur.nom }}</li>
+      <li><strong>Email :</strong> {{ selectedFournisseur.email }}</li>
+    </ul>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2 px-3 pb-3">
+      <button pButton label="Annuler" class="p-button-text" (click)="visibleDelete = false"></button>
+      <button pButton label="Supprimer" class="p-button-danger" (click)="supprimerFournisseur()"></button>
+    </div>
+  </ng-template>
+</p-dialog>

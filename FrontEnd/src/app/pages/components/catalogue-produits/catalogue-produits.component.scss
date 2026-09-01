@@ -1,0 +1,141 @@
+.type-filter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+
+  .type {
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border 0.2s ease;
+
+    &:hover {
+      background-color: var(--primary-color);
+      color: #fff;
+    }
+
+    &.active {
+      background-color: var(--primary-color);
+      color: #fff;
+      border: 1px solid #000;
+    }
+  }
+}
+
+.type-title {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  text-align: center;
+  color: #444;
+}
+
+// Dialog custom size and padding
+::ng-deep .p-dialog {
+  width: 90% !important;
+  max-width: 95vw;
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+  padding: 2rem !important;
+  overflow: visible !important;
+}
+
+// Form inside the dialog
+.dialog-form-modern {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    input,
+    ::ng-deep .p-dropdown {
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: var(--primary-color);
+        outline: none;
+      }
+    }
+
+    ::ng-deep .p-dropdown {
+      width: 100% !important;
+    }
+
+    ::ng-deep .p-inputtext {
+      width: 100% !important;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+}
+
+::ng-deep .p-dialog {
+  max-width: 25rem !important;
+  border-radius: 12px !important;
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+  padding: 2rem !important;
+  overflow: visible !important;
+}
+
+::ng-deep .p-dialog {
+  animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// bordure rouge sur les champs invalides 
+
+.invalid-field {
+  border: 1px solid #e53935 !important;
+  box-shadow: 0 0 0 0.1rem rgba(229, 57, 53, 0.25) !important;
+  border-radius: 6px;
+}
+
+.field-error {
+  color: #e53935;
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+

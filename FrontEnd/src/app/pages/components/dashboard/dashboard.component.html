@@ -1,0 +1,17 @@
+<app-achat-pie></app-achat-pie>
+
+<app-repartition-ventes></app-repartition-ventes>
+
+<p-dropdown
+  [options]="years"
+  [(ngModel)]="selectedYear"
+  optionLabel="label"
+  optionValue="value"
+  (onChange)="loadAllData($event.value)"
+  placeholder="Sélectionner une année">
+</p-dropdown>
+
+<div class="card">
+  <h2 class="text-xl mb-2">Bénéfices mensuels</h2>
+  <p-chart type="bar" [data]="profitsData" [options]="profitsOptions" styleClass="w-full" />
+</div>

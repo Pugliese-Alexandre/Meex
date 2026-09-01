@@ -1,0 +1,311 @@
+<!-- Bouton d'ajout personnalisé -->
+<app-custom-button
+  icon="pi pi-plus"
+  tooltip="Ajouter un client"
+  styleClass="btn-primary"
+  (click)="visibleAdd = true"
+/>
+
+<!-- Tableau des Clients -->
+<div class="card">
+  <p-toast />
+  
+  <!-- Filtres alphabétiques -->
+<div class="alphabet-filter mb-3">
+  <p class="alphabet-title">Filtrer par Nom :</p>
+  <span *ngFor="let letter of alphabet"
+        (click)="filterByLetter(letter)"
+        class="letter"
+        [ngClass]="{ 'active': selectedLetter === letter }"
+        style="cursor: pointer; margin-right: 5px;">
+    {{ letter }}
+  </span>
+
+  <button *ngIf="selectedLetter" (click)="resetFilter()" class="ml-2 p-button p-button-sm p-button-secondary">
+    Réinitialiser
+  </button>
+
+</div>
+<div *ngIf="selectedLetter">
+  <strong>Lettre sélectionnée :</strong> {{ selectedLetter }} - 
+  {{ filteredClients.length > 0 ? filteredClients.length + ' client(s) trouvé(s)' : 'Aucun client' }}
+</div>
+
+  <p-table [value]="filteredClients" dataKey="id" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 15]">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+        <th>Adresse</th>
+        <th>Numero</th>
+        <th>Code Postal</th>
+        <th>Date Anniversaire</th>
+        <th>Date d'inscription</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-client>
+      <tr>
+        <td>{{ client.id }}</td>
+        <td>{{ client.prenom }}</td>
+        <td>{{ client.nom }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.telephone }}</td>
+        <td>{{ client.adresse }}</td>
+        <td>{{ client.numeroMaison }}</td>
+        <td>{{ client.codePostal }}</td>
+        <td>{{ client.dateAnniversaire | date:'shortDate' }}</td>
+        <td>{{ client.dateInscription | date:'shortDate' }}</td>
+        <td class="flex gap-2">
+          <p-button 
+            icon="pi pi-pencil" 
+            severity="secondary" 
+            rounded 
+            text 
+            (click)="ouvrirEdition(client)">
+          </p-button>
+        
+          <p-button 
+            icon="pi pi-trash" 
+            severity="danger" 
+            rounded 
+            text 
+            (click)="ouvrirSuppression(client)">
+          </p-button>
+        
+          <p-button 
+            icon="pi pi-envelope" 
+            severity="help" 
+            rounded 
+            text 
+            (click)="ouvrirEmail(client)">
+          </p-button>
+        </td>        
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<!-- Dialog : Envoyer un email -->
+<p-dialog
+  [(visible)]="visibleEmailDialog"
+  [modal]="true"
+  [style]="{ width: '100%', maxWidth: '36rem' }"
+  header="Envoyer un email"
+>
+  <div class="p-fluid">
+    <!-- Destinataire (readonly) -->
+    <div class="field mb-3">
+      <label for="emailTo">Destinataire</label>
+      <input
+        pInputText
+        id="emailTo"
+        [value]="selectedClientEmail"
+        readonly
+        class="w-full bg-gray-100 text-md px-3 py-2 rounded-lg"
+      />
+    </div>
+
+    <!-- Sujet -->
+    <div class="field mb-3">
+      <label for="emailSubject">Sujet</label>
+      <input
+        pInputText
+        id="emailSubject"
+        [(ngModel)]="emailSubject"
+        placeholder="Objet du message"
+        class="w-full bg-gray-100 text-md px-3 py-2 rounded-lg"
+      />
+    </div>
+
+    <!-- Éditeur riche -->
+    <div class="field mb-3">
+      <label for="emailBody">Message</label>
+      <p-editor
+        [(ngModel)]="emailBody"
+        [style]="{ height: '200px' }"
+        styleClass="rich-editor"
+        placeholder="Votre message ici..."
+      ></p-editor>
+    </div>
+  </div>
+
+  <ng-template #footer>
+    <div class="flex justify-end gap-2">
+      <p-button label="Annuler" severity="secondary" (click)="visibleEmailDialog = false" />
+      <p-button label="Envoyer" icon="pi pi-send" (click)="envoyerEmail()" severity="primary" />
+    </div>
+  </ng-template>
+</p-dialog>
+
+
+<!-- Dialog : Ajouter un client -->
+<p-dialog
+  header="Ajouter un client"
+  [(visible)]="visibleAdd"
+  [modal]="true"
+  [style]="{ width: '25rem' }"
+>
+  <span class="p-text-secondary block mb-4">
+    Veuillez remplir les informations du nouveau client :
+  </span>
+
+  <div class="flex items-center gap-4 mb-3">
+    <label for="prenom" class="font-semibold w-24">Prénom</label>
+    <input pInputText id="prenom" class="flex-auto" [(ngModel)]="newClient.prenom" />
+  </div>
+
+  <div class="flex items-center gap-4 mb-3">
+    <label for="nom" class="font-semibold w-24">Nom</label>
+    <input pInputText id="nom" class="flex-auto" [(ngModel)]="newClient.nom" />
+  </div>
+
+  <div class="flex items-center gap-4 mb-3">
+    <label for="email" class="font-semibold w-24">Email</label>
+    <input pInputText id="email" class="flex-auto" [(ngModel)]="newClient.email" />
+  </div>
+
+  <div class="flex items-center gap-4 mb-3">
+    <label for="telephone" class="font-semibold w-24">Téléphone</label>
+    <input pInputText id="telephone" class="flex-auto" [(ngModel)]="newClient.telephone" />
+  </div>
+
+  <div class="flex items-center gap-4 mb-3">
+    <label for="adresse" class="font-semibold w-24">Adresse</label>
+    <input pInputText id="adresse" class="flex-auto" [(ngModel)]="newClient.adresse" />
+  </div>
+
+  <div class="flex items-center gap-4 mb-3">
+    <label for="numeroMaison" class="font-semibold w-24">Numéro</label>
+    <input pInputText id="numeroMaison" class="flex-auto" [(ngModel)]="newClient.numeroMaison" />
+  </div>
+
+  <div class="flex items-center gap-4 mb-3">
+    <label for="codePostal" class="font-semibold w-24">Code Postal</label>
+    <input pInputText id="codePostal" class="flex-auto" [(ngModel)]="newClient.codePostal" />
+  </div>
+
+  <div class="flex items-center gap-4 mb-5">
+    <label for="dateAnniversaire" class="font-semibold w-24">Anniversaire</label>
+    <p-calendar
+      id="dateAnniversaire"
+      [(ngModel)]="newClient.dateAnniversaire"
+      dateFormat="dd-mm-yy"
+      showIcon="true"
+      placeholder="Date"
+      class="flex-auto"
+    ></p-calendar>
+  </div>
+
+  <div class="flex justify-end gap-2">
+    <p-button label="Annuler" severity="secondary" (click)="visibleAdd = false" />
+    <p-button
+      label="Ajouter"
+      [disabled]="!newClient.prenom || !newClient.nom || !newClient.email || !newClient.telephone"
+      (click)="ajouterClient()"
+    />
+  </div>
+</p-dialog>
+
+
+<!-- Dialog : Modifier un client -->
+<p-dialog
+  header="Modifier un client"
+  [(visible)]="visibleEdit"
+  [modal]="true"
+  [style]="{ width: '25rem' }"
+>
+  <span class="p-text-secondary block mb-4">Modifier les informations du client :</span>
+
+  <div *ngIf="selectedClient">
+    <div class="flex items-center gap-4 mb-3">
+      <label for="prenom" class="font-semibold w-24">Prénom</label>
+      <input pInputText id="prenom" [(ngModel)]="selectedClient.prenom" style="width: 200px;" />
+    </div>    
+
+    <div class="flex items-center gap-4 mb-3">
+      <label for="nom" class="font-semibold w-24">Nom</label>
+      <input pInputText id="nom" [(ngModel)]="selectedClient.nom" style="width: 200px;" />
+    </div>
+
+    <div class="flex items-center gap-4 mb-3">
+      <label for="email" class="font-semibold w-24">Email</label>
+      <input pInputText id="email" [(ngModel)]="selectedClient.email" style="width: 200px;" />
+    </div>
+
+    <div class="flex items-center gap-4 mb-3">
+      <label for="telephone" class="font-semibold w-24">Téléphone</label>
+      <input pInputText id="telephone" [(ngModel)]="selectedClient.telephone" style="width: 200px;" />
+    </div>
+
+    <div class="flex items-center gap-4 mb-3">
+      <label for="adresse" class="font-semibold w-24">Adresse</label>
+      <input pInputText id="adresse" [(ngModel)]="selectedClient.adresse" style="width: 200px;" />
+    </div>
+
+    <div class="flex items-center gap-4 mb-3">
+      <label for="numeroMaison" class="font-semibold w-24">Numéro</label>
+      <input pInputText id="numeroMaison" [(ngModel)]="selectedClient.numeroMaison" style="width: 200px;" />
+    </div>
+
+    <div class="flex items-center gap-4 mb-3">
+      <label for="codePostal" class="font-semibold w-24">Code Postal</label>
+      <input pInputText id="codePostal" [(ngModel)]="selectedClient.codePostal" style="width: 200px;" />
+    </div>
+
+    <div class="flex items-center gap-4 mb-4">
+      <label for="dateAnniversaire" class="font-semibold w-24">Anniversaire</label>
+      <p-calendar
+        id="dateAnniversaire"
+        [(ngModel)]="selectedClient.dateAnniversaire"
+        dateFormat="dd-mm-yy"
+        showIcon="true"
+        class="flex-auto"
+      ></p-calendar>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-2">
+    <p-button label="Annuler" severity="secondary" (click)="visibleEdit = false" />
+    <p-button label="Enregistrer" severity="primary" (click)="modifierClient()" />
+  </div>
+</p-dialog>
+
+
+<!-- Dialog : Supprimer un client -->
+<p-dialog
+  header="Confirmation"
+  [(visible)]="visibleDelete"
+  [modal]="true"
+  [style]="{ width: 'auto' }"
+
+  [closable]="false"
+>
+  <div class="p-3">
+    <p class="text-base text-900 m-0">
+      <strong>Supprimer {{ selectedClient?.prenom }} {{ selectedClient?.nom }}</strong> ?
+    </p>
+    <p class="text-sm text-color-secondary mt-2 mb-3">
+      Cette action est irréversible.
+    </p>
+
+    <div class="flex justify-content-end gap-2">
+      <button
+        pButton
+        label="Annuler"
+        class="p-button-text"
+        (click)="visibleDelete = false"
+      ></button>
+      <button
+        pButton
+        label="Supprimer"
+        icon="pi pi-trash"
+        class="p-button-danger"
+        (click)="supprimerClient()"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

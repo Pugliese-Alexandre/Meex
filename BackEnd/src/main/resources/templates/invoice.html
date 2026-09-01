@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Facture</title>
+    <link rel="stylesheet" href="/css/invoice.css" />
+</head>
+<body>
+
+<h1>Facture n° <span th:text="${invoice.number}">00001</span></h1>
+
+<div class="section">
+    <strong>Client :</strong><br />
+    <span th:text="${invoice.clientEmail}">jean.dupont@email.com</span>
+</div>
+
+<div class="section">
+    <strong>Date :</strong>
+    <span th:text="${T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy').format(invoice.dateEmission)}">01/06/2025</span>
+</div>
+
+<div class="total">
+    Montant total : <span th:text="${invoice.total}">100.00</span> €
+</div>
+
+</body>
+</html>

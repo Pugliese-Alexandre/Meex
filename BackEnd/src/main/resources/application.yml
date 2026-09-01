@@ -1,0 +1,45 @@
+# Configuration globale de Spring Boot
+spring:
+
+  # ── Source de données (DataSource) ───────────────────────────────
+  datasource:
+    # URL JDBC pour se connecter à PostgreSQL
+    url: jdbc:postgresql://localhost:5432/postgres
+    # Nom d'utilisateur de la base
+    username: postgres
+    # Mot de passe associé
+    password: root
+    # Driver JDBC à utiliser
+    driver-class-name: org.postgresql.Driver
+
+  # ── Envoi d’e-mails (Mail) ────────────────────────────────────────
+  mail:
+    # Serveur SMTP de Mailfence
+    host: smtp.mailfence.com
+    # Port SMTP (465 = SSL/TLS implicite, 587 = STARTTLS explicite)
+    port: 465
+    # Adresse e-mail utilisée pour l’authentification SMTP
+    username: meex@mailfence.com
+    # Mot de passe SMTP ou token d’application
+    password: Kiloupa159!
+    properties:
+      # Active l’authentification auprès du serveur SMTP
+      mail.smtp.auth: true
+      # Active STARTTLS (nécessaire si port = 587)
+      mail.smtp.starttls.enable: true
+      # Si vous passez en port 465 (SSL/TLS), décommentez :
+      # mail.smtp.ssl.enable: true
+
+  # ── Configuration JPA / Hibernate ────────────────────────────────
+  jpa:
+    hibernate:
+      # Mode de gestion du schéma en base (none, validate, update, create, create-drop)
+      ddl-auto: update
+    # Affiche les requêtes SQL dans la console
+    show-sql: true
+    properties:
+      hibernate:
+        # Dialecte à utiliser pour PostgreSQL
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # Formate le SQL pour le rendre lisible dans les logs
+        format_sql: true

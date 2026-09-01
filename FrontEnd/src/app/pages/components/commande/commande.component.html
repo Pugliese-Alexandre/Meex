@@ -1,0 +1,265 @@
+<!-- Bouton principal pour afficher la modale de création de commande -->
+<app-custom-button
+  icon="pi pi-plus"
+  tooltip="Ajouter une commande"
+  styleClass="btn-primary"
+  (click)="visibleAdd = true">
+</app-custom-button>
+
+<!-- Barre de recherche et filtres -->
+<div class="flex justify-content-between align-items-center mb-3">
+  <!-- Champ de recherche par ID ou nom du client -->
+  <input
+    type="text"
+    pInputText
+    placeholder="Recherche par ID ou client"
+    [(ngModel)]="searchTerm"
+    class="p-inputtext-sm w-full max-w-30rem"
+  />
+
+  <!-- Filtre de statut avec menu déroulant -->
+  <p-dropdown
+    [options]="statuts"
+    [(ngModel)]="selectedStatut"
+    placeholder="Filtrer par statut"
+    class="w-full max-w-15rem"
+    [autoDisplayFirst]="false"
+  ></p-dropdown>
+
+  <!-- Bouton pour réinitialiser le filtre de statut -->
+  <button
+    pButton
+    label="Réinitialiser"
+    icon="pi pi-times"
+    class="p-button-sm p-button-secondary ml-2"
+    (click)="selectedStatut = ''"
+    *ngIf="selectedStatut"
+  ></button>
+</div>
+
+<!-- Tableau des commandes -->
+<p-table [value]="filteredCommandes" [paginator]="true" [rows]="10">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th>Client</th>
+      <th>Date</th>
+      <th>Statut</th>
+      <th>Total</th>
+      <th>Facture</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  
+  <ng-template pTemplate="body" let-cmd>
+    <tr>
+      <td>{{ cmd.id }}</td>
+      <td>{{ cmd.nomClient }}</td> 
+      <td>{{ cmd.date | date: 'shortDate' }}</td>
+
+      <!-- Statut avec badge coloré -->
+      <td>
+        <p-tag 
+          [value]="formatStatut(cmd.statut)" 
+          [severity]="getSeverity(cmd.statut)" 
+          class="text-sm font-semibold"
+        ></p-tag>
+      </td>
+
+      <!-- Total de la commande -->
+      <td style="font-weight: bold;">
+        {{ cmd.totalCommande | number:'1.2-2' }} €
+      </td>
+
+      <!-- Indique si une facture est liée -->
+      <td>
+        <span *ngIf="cmd.facture; else noFacture">Oui</span>
+        <ng-template #noFacture>Non</ng-template>
+      </td>
+
+      <!-- Actions disponibles pour chaque commande -->
+      <td class="flex gap-1">
+        <p-button 
+          icon="pi pi-pencil" 
+          severity="info" 
+          rounded 
+          text 
+          (click)="editerCommande(cmd)" 
+          title="Éditer la commande"
+        ></p-button>
+
+        <p-button 
+          icon="pi pi-eye" 
+          severity="help" 
+          rounded 
+          text 
+          (click)="voirFacture(cmd)" 
+          title="Voir facture"
+        ></p-button>
+
+        <p-button 
+          icon="pi pi-check" 
+          severity="primary" 
+          rounded 
+          text 
+          (click)="genererFacture(cmd)" 
+          title="Générer facture"
+        ></p-button>
+
+        <p-button 
+          icon="pi pi-trash" 
+          severity="danger" 
+          rounded 
+          text 
+          (click)="archiverCommande(cmd)" 
+          title="Archiver"
+        ></p-button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<!-- Affichage du total cumulé des commandes -->
+<div class="text-right mt-4 text-lg font-semibold">
+  Total général : {{ totalCommandes | number:'1.2-2' }} €
+</div>
+
+<!-- Modale pour créer une nouvelle commande -->
+<p-dialog
+  header="Nouvelle commande"
+  [modal]="true"
+  [(visible)]="visibleAdd"
+  [style]="{ width: '40rem', maxWidth: '95vw' }"
+  contentStyleClass="dialog-commande"
+  [closable]="false"
+>
+  <div class="p-fluid vertical-form">
+
+    <!-- Sélection d'un client -->
+    <div class="form-group">
+      <label for="client">Client</label>
+      <p-dropdown
+        inputId="client"
+        [options]="clients"
+        optionLabel="nomComplet"
+        optionValue="id"
+        placeholder="Sélectionner un client"
+        [(ngModel)]="nouvelleCommande.clientId"
+      ></p-dropdown>
+    </div>
+
+    <!-- Liste d'articles à ajouter dans la commande -->
+    <div class="form-group">
+      <label>Articles</label>
+
+      <!-- Boucle sur chaque article ajouté -->
+      <div *ngFor="let item of nouvelleCommande.articles; let i = index" class="article-item">
+        <!-- Sélection de l'article -->
+        <div class="field">
+          <label>Article</label>
+          <p-dropdown
+            [options]="articles"
+            optionLabel="nom"
+            optionValue="id"
+            [(ngModel)]="item.articleId"
+            placeholder="Sélectionner un article"
+          ></p-dropdown>
+        </div>
+
+        <!-- Quantité à commander -->
+        <div class="field mt-2">
+          <label>Quantité</label>
+          <input
+            type="number"
+            pInputText
+            [(ngModel)]="item.quantite"
+            min="1"
+          />
+        </div>
+
+        <!-- Supprimer un article -->
+        <div class="flex justify-content-end mt-2">
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-danger"
+            (click)="nouvelleCommande.articles.splice(i, 1)"
+          ></button>
+        </div>
+
+        <hr class="my-3" />
+      </div>
+
+      <!-- Ajouter un nouvel article -->
+      <button
+        pButton
+        type="button"
+        icon="pi pi-plus"
+        label="Ajouter un article"
+        class="p-button-text mt-2"
+        (click)="ajouterArticle()"
+      ></button>
+    </div>
+  </div>
+
+  <!-- Pied de la modale avec les boutons d'action -->
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2">
+      <button pButton label="Annuler" class="p-button-text" (click)="visibleAdd = false"></button>
+      <button pButton label="Créer" class="p-button-success" (click)="creerCommande()"></button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Modale pour éditer une commande existante -->
+<p-dialog
+  header="Modifier la commande"
+  [(visible)]="visibleEdit"
+  [modal]="true"
+  [style]="{ width: '40rem', maxWidth: '95vw', height: '43vh' }"
+  contentStyleClass="dialog-commande"
+  [closable]="false"
+  *ngIf="commandeEnCours"
+>
+  <div class="p-fluid vertical-form">
+
+    <!-- Nom du client (lecture seule) -->
+    <div class="form-group">
+      <label>Client</label>
+      <input
+        type="text"
+        pInputText
+        [value]="commandeEnCours.nomClient"
+        disabled
+      />
+    </div>
+
+    <!-- Modification du statut de la commande -->
+    <div class="form-group">
+      <label>Statut</label>
+      <p-dropdown
+        [options]="statuts"
+        [(ngModel)]="commandeEnCours.statut"
+        placeholder="Sélectionner un statut"
+      ></p-dropdown>
+    </div>
+  </div>
+
+  <!-- Pied de la modale -->
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2">
+      <button
+        pButton
+        label="Annuler"
+        class="p-button-text"
+        (click)="visibleEdit = false"
+      ></button>
+      <button
+        pButton
+        label="Enregistrer"
+        class="p-button-success"
+        (click)="sauvegarderCommande()"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>
