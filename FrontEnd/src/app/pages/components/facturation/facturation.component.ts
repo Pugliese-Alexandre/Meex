@@ -15,7 +15,7 @@ import { DialogModule } from 'primeng/dialog';
 import { saveAs } from 'file-saver';
 
 // Bouton personnalisé
-import { CustomButtonComponent } from '../../../shared/components/custom-button/custom-button.component';
+import { CustomButtonComponent } from '../../../../shared/components/custom-button/custom-button.component';
 
 // Modèles de données
 import { FactureResponse } from '../../../models/facture-response.model';

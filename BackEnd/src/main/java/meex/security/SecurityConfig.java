@@ -9,15 +9,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        System.out.println("🟥 SÉCURITÉ DÉSACTIVÉE POUR LE DÉVELOPPEMENT 🟥");
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.disable())
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // ⛔ Autorise tout, partout !
-                .httpBasic(basic -> basic.disable())
-                .formLogin(form -> form.disable());
+                .cors(cors -> {})
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()
+                );
 
         return http.build();
     }

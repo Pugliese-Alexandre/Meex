@@ -16,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 // Bouton personnalisé utilisé dans le formulaire
-import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 // Déclaration du composant
 @Component({

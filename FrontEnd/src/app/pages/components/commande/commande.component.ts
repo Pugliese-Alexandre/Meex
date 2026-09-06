@@ -8,15 +8,14 @@ import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
-import { DialogModule } from 'primeng/dialog'; 
+import { DialogModule } from 'primeng/dialog';
 
 
 import { ClientService } from '../../../services/client.service';
 import { ArticleService } from '../../../services/article.service';
 
 // CUSTOM COMPONENTS
-import { CustomButtonComponent } from '../../../shared/components/custom-button/custom-button.component';
-
+import { CustomButtonComponent } from '../../../../shared/components/custom-button/custom-button.component';
 @Component({
   selector: 'app-commande',
   templateUrl: './commande.component.html',
@@ -47,8 +46,8 @@ statuts = [
     const lowerSearch = this.searchTerm.toLowerCase();
 
     const matchesSearch =
-      cmd.nomClient?.toLowerCase().includes(lowerSearch) || 
-      cmd.id?.toString().includes(lowerSearch);             
+      cmd.nomClient?.toLowerCase().includes(lowerSearch) ||
+      cmd.id?.toString().includes(lowerSearch);
 
     return matchesStatut && matchesSearch;
   });
@@ -56,8 +55,8 @@ statuts = [
 
 ngOnInit(): void {
   this.loadCommandes();
-  this.loadClients();   
-  this.loadArticles();  
+  this.loadClients();
+  this.loadArticles();
 }
 
 loadCommandes(): void {
@@ -95,7 +94,7 @@ loadArticles(): void {
   genererFacture(cmd: Commande): void {
     this.commandeService.createFacture(cmd.id).subscribe({
       next: factureId => {
-        cmd.factureId = factureId;  
+        cmd.factureId = factureId;
         this.voirFacture(cmd);
       },
       error: err => {
@@ -142,7 +141,7 @@ date: new Date().toISOString().substring(0, 10), // 'YYYY-MM-DD'
 };
 
 
-clients: any[] = []; 
+clients: any[] = [];
 articles: any[] = [];
 
 ajouterArticle(): void {
@@ -192,7 +191,7 @@ visibleEdit: boolean = false;
 commandeEnCours!: Commande;
 
 editerCommande(cmd: Commande): void {
-    this.commandeEnCours = { ...cmd }; 
+    this.commandeEnCours = { ...cmd };
   this.visibleEdit = true;
   console.log('Édition de la commande :', cmd);
   // TODO : afficher une modale avec les infos de la commande

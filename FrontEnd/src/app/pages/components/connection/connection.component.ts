@@ -4,8 +4,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
-
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 @Component({
   selector: 'app-connection',
   standalone: true,
@@ -25,17 +24,17 @@ export class ConnectionComponent {
       email: ['', [Validators.required, Validators.email]],
       motDePasse: ['', [Validators.required, Validators.minLength(6)]]
     });
-    
-    
+
+
   }
 
   onSubmit() {
     if (this.form.valid) {
       const { email, motDePasse } = this.form.value;
-  
+
       this.authService.login(email, motDePasse).subscribe({
         next: (response) => {
-          const fakeToken = btoa(`${email}:${motDePasse}`); 
+          const fakeToken = btoa(`${email}:${motDePasse}`);
           this.authService.setLogin(fakeToken, response.email, response.id);
           this.router.navigate(['/dashboard']);
         },
@@ -46,5 +45,5 @@ export class ConnectionComponent {
       });
     }
   }
-  
+
 }

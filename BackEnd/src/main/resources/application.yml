@@ -4,7 +4,7 @@ spring:
   # ── Source de données (DataSource) ───────────────────────────────
   datasource:
     # URL JDBC pour se connecter à PostgreSQL
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5434/meex_db
     # Nom d'utilisateur de la base
     username: postgres
     # Mot de passe associé

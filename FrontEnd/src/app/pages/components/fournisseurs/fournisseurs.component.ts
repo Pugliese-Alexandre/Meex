@@ -14,7 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
 // Composant personnalisé pour les boutons
-import { CustomButtonComponent } from '../../../shared/components/custom-button/custom-button.component';
+import { CustomButtonComponent } from '../../../../shared/components/custom-button/custom-button.component';
 
 // Déclaration du composant avec ses métadonnées
 @Component({

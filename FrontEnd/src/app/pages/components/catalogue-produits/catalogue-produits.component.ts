@@ -1,15 +1,15 @@
-//  IMPORTS ANGULAR DE BASE 
+//  IMPORTS ANGULAR DE BASE
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-//  SERVICES 
+//  SERVICES
 import { ProductService, Product } from '../../../services/productservice';
 import { FournisseurService, Fournisseur } from '../../../services/fournisseur.service';
 
-//  FORMULAIRES 
+//  FORMULAIRES
 import { FormsModule } from '@angular/forms';
 
-//  MODULES PRIMENG 
+//  MODULES PRIMENG
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -17,13 +17,12 @@ import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
 
-//  SERVICES PRIMENG 
+//  SERVICES PRIMENG
 import { MessageService } from 'primeng/api';
 
-//  COMPOSANTS CUSTOM 
-import { CustomButtonComponent } from '../../../shared/components/custom-button/custom-button.component';
-
-//  DÉCLARATION DU COMPOSANT 
+//  COMPOSANTS CUSTOM
+import { CustomButtonComponent } from '../../../../shared/components/custom-button/custom-button.component';
+//  DÉCLARATION DU COMPOSANT
 @Component({
   selector: 'app-catalogue-produits',
   standalone: true,
@@ -43,7 +42,7 @@ import { CustomButtonComponent } from '../../../shared/components/custom-button/
   styleUrls: ['./catalogue-produits.component.scss']
 })
 export class CatalogueProduitsComponent {
-  //  PROPRIÉTÉS 
+  //  PROPRIÉTÉS
   products: Product[] = [];                // Liste de tous les produits
   fournisseurs: Fournisseur[] = [];        // Liste des fournisseurs
   selectedFournisseurId?: number;          // ID du fournisseur sélectionné
@@ -106,7 +105,7 @@ export class CatalogueProduitsComponent {
   // Génère une référence produit à partir du type sélectionné
   generateReference(type: string): string {
     const prefixMap: { [key: string]: string } = {
-      'Montre': 'MON',    
+      'Montre': 'MON',
       'Collier': 'COL',
       'Bague': 'BAG',
       'Bracelet': 'BRA',

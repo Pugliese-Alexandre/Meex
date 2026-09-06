@@ -1,46 +1,141 @@
 # Meex
 
-Full-stack web application for jewelry management.
+Meex is a full-stack web application developed for jewelry store management.
 
-The project includes a Spring Boot backend and an Angular frontend.
+The application provides an administration interface for managing products, customers, suppliers, orders and invoices.
+
+This project was developed as part of my studies and allowed me to practice the development of a complete application with an Angular frontend, a Spring Boot backend and a PostgreSQL database.
 
 ## Technologies
 
 ### Backend
-- Java
+- Java 17
 - Spring Boot
 - Maven
+- Spring Data JPA
 - REST API
 
 ### Frontend
 - Angular
 - TypeScript
-- HTML / CSS
+- HTML / SCSS
+- PrimeNG
+
+### Database
+- PostgreSQL
 
 ## Project structure
 
-- `BackEnd` — Spring Boot REST API
-- `FrontEnd` — Angular web application
+- `BackEnd` — Spring Boot REST API and database access
+- `FrontEnd` — Angular administration interface
 
 ## Features
 
-This project is a full-stack web application developed as part of my studies.
+### Dashboard
+- Overview of the application
+- Sales and product statistics
+- Data visualization with charts
 
-It demonstrates communication between an Angular frontend and a Spring Boot backend through a REST API.
+### Product catalogue
+- Display jewelry products
+- Add, edit and delete products
+- Product filtering by jewelry type
+- Stock management
+- Automatic stock status:
+    - Available
+    - Low quantity
+    - Unavailable
+- Supplier association
+
+### Customer management
+- Display and manage customers
+- Customer information and contact details
+
+### Supplier management
+- Display and manage suppliers
+- Supplier information linked to products
+
+### Orders
+- Order management
+- Association between customers and products
+- Order status tracking
+
+### Invoicing
+- Invoice management
+- Association between invoices, customers and orders
+
+### Archives
+- Archive section to keep data before permanent deletion
+
+## Database
+
+The application uses PostgreSQL to persist the application data.
+
+Main entities include:
+
+- Articles
+- Customers
+- Suppliers
+- Orders
+- Order items
+- Invoices
+- Supplier categories
+
+The Angular frontend communicates with the Spring Boot backend through REST endpoints.
+
+Example:
+
+```text
+GET /api/articles
+```
+
+## Authentication
+
+An authentication system was initially implemented in the project.
+
+For the current demonstration version, authentication is temporarily bypassed so the different administration features can be accessed directly.
 
 ## Running the project
 
 ### Backend
 
-Open the `BackEnd` folder and run the Spring Boot application.
+From the `BackEnd` directory:
+
+```bash
+./mvnw spring-boot:run
+```
+
+On Windows:
+
+```bash
+.\mvnw.cmd spring-boot:run
+```
+
+The backend runs by default on:
+
+```text
+http://localhost:8080
+```
 
 ### Frontend
 
-Open the `FrontEnd` folder and run:
+From the `FrontEnd` directory:
 
 ```bash
 npm install
-ng serve
+npm start
+```
 
-### Author
-Alexandre Pugliese
+The Angular development server will then start locally.
+
+## Project status
+
+The project is functional and connected to a PostgreSQL database.
+
+Some features and UI elements are still being improved as the project continues to evolve.
+
+## Author
+
+**Alexandre Pugliese**
+
+Computer Science student — Application Development

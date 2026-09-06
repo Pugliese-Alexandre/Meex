@@ -22,7 +22,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { EditorModule } from 'primeng/editor';
 
 // IMPORT DE TON BOUTON PERSONNALISÉ
-import { CustomButtonComponent } from '../../../shared/components/custom-button/custom-button.component';
+import { CustomButtonComponent } from '../../../../shared/components/custom-button/custom-button.component';
 
 // CONFIGURATION DU COMPOSANT
 @Component({
